@@ -28,6 +28,7 @@ class ControllerCatalogSupplier extends Controller {
 		$data['edit'] = $this->url->link('catalog/supplier/edit', 'user_token=' . $this->session->data['user_token'], true);
 		$data['delete'] = $this->url->link('catalog/supplier/delete', 'user_token=' . $this->session->data['user_token'], true);
 		$data['coefficient'] = $this->url->link('catalog/supplier/coefficient', 'user_token=' . $this->session->data['user_token'], true);
+		$data['calculate_all'] = $this->url->link('catalog/supplier/allCoefficient', 'user_token=' . $this->session->data['user_token'], true);
 
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
@@ -100,9 +101,11 @@ class ControllerCatalogSupplier extends Controller {
 
 	}
 
-	public function coefficient(){
+	public function coefficient($supplier_id = null){
 
-		$supplier_id = $this->request->post['supplier_id'];
+		if($supplier_id == null){
+			$supplier_id = $this->request->post['supplier_id'];
+		}
 
 		$this->load->model('catalog/supplier');
 
@@ -114,6 +117,27 @@ class ControllerCatalogSupplier extends Controller {
 		$supplier_coefficient = $supplier_rate / $store_rate;
 
 		$this->model_catalog_supplier->updateCoefficient($supplier_id, $supplier_coefficient);
+
+		if($supplier_id == null){
+			$this->response->redirect($this->url->link('catalog/supplier', 'user_token=' . $this->session->data['user_token'], true));
+		} else {
+			return TRUE;
+		}
+
+
+	}
+
+	public function allCoefficient(){
+
+		$this->load->model('catalog/supplier');
+
+		$suppliers = $this->model_catalog_supplier->getSuppliers();
+
+		foreach ($suppliers as $supplier) {
+
+			$this->coefficient($supplier['id']);
+
+		}
 
 		$this->response->redirect($this->url->link('catalog/supplier', 'user_token=' . $this->session->data['user_token'], true));
 

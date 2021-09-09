@@ -2,6 +2,9 @@
 <div id="content">
     <div class="page-header">
         <div class="container-fluid">
+            <div class="pull-right">
+                <a href="{{ calculate_all }}" data-toggle="tooltip" title="{{ button_calculate_all }}" class="btn btn-success">{{ button_calculate_all }}</a>
+            </div>
             <h1>{{ heading_title }}</h1>
             <ul class="breadcrumb">
                 {% for breadcrumb in breadcrumbs %}
@@ -38,7 +41,7 @@
 
                     <tr>
                         <td>{{ supplier.id }}</td>
-                        <form id="editForm" action="{{ edit }}" method="post">
+                        <form id="editForm{{ supplier.id }}" action="{{ edit }}" method="post">
                             <input type="hidden" name="supplier_id" value="{{ supplier.id }}">
                             <td class="text-left"><input type="text" value="{{ supplier.name }}" class="form-control" name="supplier_name"></td>
                             <td class="text-center"><input type="number" step="0.01" value="{{ supplier.rate }}" class="form-control" name="supplier_rate"></td>
@@ -56,7 +59,7 @@
                          <table class="table-bordered">
                             <tr>
 
-                            <td><button type="submit" form="editForm" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary">{{ button_edit }}</button></td>
+                            <td><button type="submit" form="editForm{{ supplier.id }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary">{{ button_edit }}</button></td>
 
                             <td>
                                 <form action="{{ delete }}" method="post">

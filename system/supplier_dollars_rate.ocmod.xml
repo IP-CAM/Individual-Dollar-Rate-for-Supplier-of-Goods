@@ -71,7 +71,6 @@
 				} else {
 					$this->db->query("UPDATE " . DB_PREFIX . "suppliers_and_products SET supplier_id = '" . $data['supplier'] . "' WHERE  product_id = '" . $product_id . "'");
 				}
-		$this->db->query("UPDATE " . DB_PREFIX . "suppliers_products_cost SET rate = '" . $data['price'] . "' WHERE product_id = '" . $product_id . "'");
 
 								/* Supplier_dollars_rate - end */]]>
 			</add>
@@ -268,22 +267,6 @@
 	</file>
 
 	<file path="catalog/model/catalog/product.php">
-		<operation>
-			<search index="0">
-				<![CDATA[return $product_data;]]>
-			</search>
-			<add position="before">
-				<![CDATA[
-				/* Supplier dollars rate - start */
-
-				$coefficient = $this->getCoefficientFromProductId($query->row['product_id']);
-				if(!empty($coefficient)){
-					$product_data[$query->row['product_id']]['price'] = $product_data[$query->row['product_id']]['price'] * $coefficient;
-				}
-				/* Supplier dollars rate - end */
-				]]>
-			</add>
-		</operation>
 
 		<operation>
 			<search>
